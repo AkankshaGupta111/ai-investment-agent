@@ -1,65 +1,306 @@
-import Image from "next/image";
+
+// "use client";
+
+// import { useState } from "react";
+// import CompanyForm from "../components/CompanyForm";
+// import ResultCard from "../components/ResultCard";
+// import { ResultData } from "../types";
+
+// export default function Home() {
+//   const [result, setResult] = useState<ResultData | null>(null);
+//   const [loading, setLoading] = useState(false);
+//   const [history, setHistory] = useState<ResultData[]>([]);
+
+//   async function handleAnalyze(name: string) {
+//     if (!name) return;
+
+//     try {
+//       setLoading(true);
+
+//       const response = await fetch("/api/analyze", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           company: name,
+//         }),
+//       });
+
+//       const data = await response.json();
+
+//       console.log(data);
+
+//       if (data.error) {
+//         alert(data.error);
+//         return;
+//       }
+
+//       setResult(data);
+
+//       setHistory((prev) => {
+//         const updated = [
+//           data,
+//           ...prev.filter(
+//             (item) => item.finance.symbol !== data.finance.symbol
+//           ),
+//         ];
+
+//         return updated.slice(0, 5);
+//       });
+//     } catch (error) {
+//       console.error(error);
+//       alert("Something went wrong.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   }
+
+//   return (
+//     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-100 flex flex-col items-center py-16 px-4">
+
+//       <h1 className="text-5xl font-bold text-blue-700 mb-2 text-center">
+//         AI Investment Research Agent
+//       </h1>
+
+//       <p className="text-gray-600 mb-10 text-center">
+//         Analyze companies using AI and get investment recommendations.
+//       </p>
+
+//       {/* <CompanyForm onAnalyze={handleAnalyze} /> */}
+//       <CompanyForm
+//   onAnalyze={handleAnalyze}
+//   loading={loading}
+// />
+
+//       {loading && (
+//         <div className="mt-10 flex flex-col items-center">
+
+//           <div className="animate-spin rounded-full h-14 w-14 border-b-4 border-blue-600"></div>
+
+//           <p className="mt-5 text-lg font-semibold text-blue-700">
+//             AI is analyzing the company...
+//           </p>
+
+//         </div>
+//       )}
+
+//       {!loading && history.length > 0 && (
+//         <div className="w-full max-w-5xl mt-10">
+
+//           <h2 className="text-2xl font-bold mb-4">
+//             📜 Recent Analysis
+//           </h2>
+
+//           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+
+//             {history.map((item, index) => (
+//               <div
+//                 key={index}
+//                 onClick={() => setResult(item)}
+//                 className="bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-blue-50 hover:shadow-lg transition"
+//               >
+//                 <h3 className="font-bold">
+//                   {item.finance.company}
+//                 </h3>
+
+//                 <p className="text-sm text-gray-500">
+//                   {item.finance.symbol}
+//                 </p>
+
+//                 <p
+//                   className={`mt-2 font-semibold ${
+//                     item.analysis.decision === "INVEST"
+//                       ? "text-green-600"
+//                       : "text-red-600"
+//                   }`}
+//                 >
+//                   {item.analysis.decision}
+//                 </p>
+//               </div>
+//             ))}
+
+//           </div>
+
+//         </div>
+//       )}
+
+//       {!loading && <ResultCard result={result} />}
+
+//       {/* Footer */}
+
+//       <footer className="mt-16 text-center text-gray-500 border-t pt-6 w-full max-w-5xl">
+
+//         <p className="font-semibold text-lg">
+//           AI Investment Research Agent
+//         </p>
+
+//         <p className="mt-2">
+//           Powered by Gemini AI • Yahoo Finance • NewsAPI • LangChain
+//         </p>
+
+//         <p className="mt-2 text-sm">
+//           © 2026 Akanksha Gupta. All Rights Reserved.
+//         </p>
+
+//       </footer>
+
+//     </main>
+//   );
+// }
+
+
+
+
+
+
+"use client";
+
+import { useState } from "react";
+import CompanyForm from "../components/CompanyForm";
+import ResultCard from "../components/ResultCard";
+import { ResultData } from "../types";
 
 export default function Home() {
+  const [result, setResult] = useState<ResultData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState<ResultData[]>([]);
+
+  async function handleAnalyze(name: string) {
+    if (!name) return;
+
+    try {
+      setLoading(true);
+
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          company: name,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "Something went wrong.");
+        return;
+      }
+
+      setResult(data);
+
+      setHistory((prev) => {
+        const updated = [
+          data,
+          ...prev.filter(
+            (item) => item.finance.symbol !== data.finance.symbol
+          ),
+        ];
+
+        return updated.slice(0, 5);
+      });
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "Unable to connect to the server. Please check your internet connection and try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-100 flex flex-col items-center py-16 px-4">
+
+      <h1 className="text-5xl font-bold text-blue-700 mb-2 text-center">
+        AI Investment Research Agent
+      </h1>
+
+      <p className="text-gray-600 mb-10 text-center">
+        Analyze companies using AI and get investment recommendations.
+      </p>
+
+      <CompanyForm
+        onAnalyze={handleAnalyze}
+        loading={loading}
+      />
+
+      {loading && (
+        <div className="mt-10 flex flex-col items-center">
+
+          <div className="animate-spin rounded-full h-14 w-14 border-b-4 border-blue-600"></div>
+
+          <p className="mt-5 text-lg font-semibold text-blue-700">
+            AI is analyzing the company...
           </p>
+
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      )}
+
+      {!loading && history.length > 0 && (
+        <div className="w-full max-w-5xl mt-10">
+
+          <h2 className="text-2xl font-bold mb-4">
+            📜 Recent Analysis
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+
+            {history.map((item, index) => (
+              <div
+                key={index}
+                onClick={() => setResult(item)}
+                className="bg-white rounded-xl shadow-md p-4 cursor-pointer hover:bg-blue-50 hover:shadow-lg transition"
+              >
+                <h3 className="font-bold">
+                  {item.finance.company}
+                </h3>
+
+                <p className="text-sm text-gray-500">
+                  {item.finance.symbol}
+                </p>
+
+                <p
+                  className={`mt-2 font-semibold ${
+                    item.analysis.decision === "INVEST"
+                      ? "text-green-600"
+                      : "text-red-600"
+                  }`}
+                >
+                  {item.analysis.decision}
+                </p>
+              </div>
+            ))}
+
+          </div>
+
         </div>
-      </main>
-    </div>
+      )}
+
+      {!loading && (
+        <ResultCard result={result} />
+      )}
+
+      <footer className="mt-16 text-center text-gray-500 border-t pt-6 w-full max-w-5xl">
+
+        <p className="font-semibold text-lg">
+          AI Investment Research Agent
+        </p>
+
+        <p className="mt-2">
+          Powered by Gemini AI • Yahoo Finance • NewsAPI • LangChain
+        </p>
+
+        <p className="mt-2 text-sm">
+          © 2026 Akanksha Gupta. All Rights Reserved.
+        </p>
+
+      </footer>
+
+    </main>
   );
 }
