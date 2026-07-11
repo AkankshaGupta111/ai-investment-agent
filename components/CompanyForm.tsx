@@ -37,7 +37,7 @@ export default function CompanyForm({
   return (
     <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
 
-      <h2 className="text-2xl font-bold mb-6 text-center">
+      <h2 className="text-2xl font-bold mb-6 text-slate-800 text-center">
         Company Analysis
       </h2>
 

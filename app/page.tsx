@@ -244,7 +244,7 @@ export default function Home() {
       {!loading && history.length > 0 && (
         <div className="w-full max-w-5xl mt-10">
 
-          <h2 className="text-2xl font-bold mb-4">
+          <h2 className="text-2xl font-bold text-slate-800 mb-4">
             📜 Recent Analysis
           </h2>
 
