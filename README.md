@@ -228,11 +228,30 @@ Due to the project timeline, the following features were not implemented:
 
 ---
 
+
 ## LLM Chat Logs (Bonus)
 
-This project was developed with the assistance of ChatGPT for project planning, debugging, architecture design, API integration, deployment guidance, and implementation support.
+This project was developed with the assistance of ChatGPT throughout the complete software development lifecycle.
 
-If included, the chat transcripts are available in the `LLM-Chat-Logs` folder.
+The `LLM-Chat-Logs` folder contains the conversations used during the development of this project, including:
+
+- Requirement analysis
+- Project planning
+- Technology stack selection
+- System architecture design
+- Gemini AI integration
+- Yahoo Finance API integration
+- NewsAPI integration
+- Frontend development
+- Backend implementation
+- UI/UX improvements
+- Stock chart integration
+- PDF report generation
+- GitHub version control
+- Vercel deployment
+- Debugging and testing
+
+These chat logs demonstrate the reasoning, implementation process, debugging approach, and iterative improvements made while building the AI Investment Research Agent.
 
 ---
 
