@@ -52,7 +52,7 @@
 
 
 
-import { llm } from "../lib/langchain";
+import { getLLM } from "../lib/langchain";
 
 export async function analyzeCompany(data: string) {
   const prompt = `
@@ -74,7 +74,8 @@ Return ONLY valid JSON.
 }
 `;
 
-  const response = await llm.invoke(prompt);
+  const llm = getLLM();
+const response = await llm.invoke(prompt);
 
   let text = response.content as string;
 
