@@ -1,27 +1,3 @@
-// import YahooFinance from "yahoo-finance2";
-
-// const yahooFinance = new YahooFinance();
-
-// export async function getCompanyData(symbol: string) {
-//   try {
-//     const quote: any = await yahooFinance.quote(symbol);
-
-//     return {
-//       company: quote.longName ?? quote.shortName ?? symbol,
-//       symbol: quote.symbol,
-//       price: quote.regularMarketPrice,
-//       marketCap: quote.marketCap,
-//       peRatio: quote.trailingPE,
-//       currency: quote.currency,
-//     };
-//   } catch (error) {
-//     console.error("Yahoo Finance Error:", error);
-//     return null;
-//   }
-// }
-
-
-
 import YahooFinance from "yahoo-finance2";
 
 const yahooFinance = new YahooFinance();
